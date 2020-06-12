@@ -32,7 +32,7 @@
     </header>
 
     <!-- Main Container -->
-    <div class="container">
+    <div class="container-fluid">
 
       <!-- Row -->
       <div class="row">
@@ -50,14 +50,17 @@
             <input class="form-control mr-sm-2" type="search" aria-label="Search">
 
             <!-- Button to submit input -->
-            <button class="btn btn-primary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+            <button class="btn btn-primary my-2 my-sm-0" type="submit">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+            
           </form>
 
           <!-- Unordered List Responsive -->
           <ul class="list-group">
 
             <!-- Li: Searched cities to appear here -->
-            <li class="list-group-item active">Dublin 1</li>
+            <li class="list-group-item">Dublin 1</li>
             <li class="list-group-item">Dublin 2</li>
             <li class="list-group-item">Dublin 3</li>
             <li class="list-group-item">Dublin 4</li>
@@ -67,8 +70,20 @@
           </ul>
         </div>
         <div class="col-sm-8">
-          One of two columns
+          <div class="col-sm-12 rounded border">
+            <ul class="list-group">
+              <li class="list-group-item current"><h2>Dublin 1 (12/06/2020)</h2></li>
+              <li class="list-group-item current">Temperature: 90.9 F</li>
+              <li class="list-group-item current">Humidity: 41%</li>
+              <li class="list-group-item current">Wind Speed: 4.7 KMPH</li>
+              <li class="list-group-item current">UV Index: <span class="rounded rounded-uv">9.49</span></li>
+            </ul>
+          </div>
+          <div class="col-sm-12">
+            One of two columns
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Footer -->

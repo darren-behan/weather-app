@@ -2,20 +2,13 @@
 
 body {
   box-sizing: border-box;
+  margin: 0;
 }
 
 /* Header */
 
 .navbar-brand, .navbar-title {
   margin: 0;
-}
-
-/* Main container */
-
-.container {
-  min-height: 100vh; /* covers 100% of viewport */
-  position: relative;
-  margin: 0 !important;
 }
 
 /* Search Column */
@@ -27,4 +20,19 @@ body {
 
 .list-group {
   padding-top: 15px;
+}
+
+/* City Weather Column */
+
+.col-sm-8 {
+  padding: 15px;
+}
+
+.current {
+  border: none;
+}
+
+.rounded-uv {
+  background-color: red;
+  padding: 5px;
 }
