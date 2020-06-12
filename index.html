@@ -26,20 +26,45 @@
 
     <!-- Header -->
     <header>
-      <nav class="navbar sticky-top navbar-dark bg-primary justify-content-center">
-        <a class="navbar-brand" href="./index.html"><h1>Weather Dashboard</h1></a>
+      <nav class="navbar sticky-top navbar-dark bg-secondary justify-content-center">
+        <a class="navbar-brand" href="./index.html"><h1 class="navbar-title">Weather Dashboard</h1></a>
       </nav>
     </header>
 
     <!-- Main Container -->
     <div class="container">
+
+      <!-- Row -->
       <div class="row">
+
+        <!-- Left Column - Search Activity -->
         <div class="col-sm-4">
+
+          <!-- Tier 4 Heading -->
           <h4>Search for a City:</h4>
+
+          <!-- Form -->
           <form class="form-inline">
+
+            <!-- Input for searching -->
             <input class="form-control mr-sm-2" type="search" aria-label="Search">
+
+            <!-- Button to submit input -->
             <button class="btn btn-primary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
           </form>
+
+          <!-- Unordered List Responsive -->
+          <ul class="list-group">
+
+            <!-- Li: Searched cities to appear here -->
+            <li class="list-group-item active">Dublin 1</li>
+            <li class="list-group-item">Dublin 2</li>
+            <li class="list-group-item">Dublin 3</li>
+            <li class="list-group-item">Dublin 4</li>
+            <li class="list-group-item">Dublin 5</li>
+            <li class="list-group-item">Dublin 6</li>
+            <li class="list-group-item">Dublin 7</li>
+          </ul>
         </div>
         <div class="col-sm-8">
           One of two columns
@@ -48,20 +73,13 @@
 
     <!-- Footer -->
     <footer>
-      <nav class="navbar fixed-bottom navbar-dark bg-primary justify-content-center">
+      <nav class="navbar fixed-bottom navbar-dark bg-secondary justify-content-center">
         <a class="navbar-brand" href="./index.html">&copy; Darren Behan</a>
       </nav>
     </footer>
 
     <!-- // Pseudocode
 
-    // HTML
-
-    // Container
-    // Left Column
-      // Search Box
-        // Dynamically append recent searches with a max of 8
-        // Recent searches to change based on new searches
     // Right Column
       // Current days weather
         // Dynamically append one column showing current day weather based on search

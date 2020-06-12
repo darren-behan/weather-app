@@ -6,7 +6,7 @@ body {
 
 /* Header */
 
-.navbar-brand {
+.navbar-brand, .navbar-title {
   margin: 0;
 }
 
@@ -23,4 +23,8 @@ body {
 .col-sm-4 {
   background-color: rgb(247, 247, 247);
   padding: 15px;
+}
+
+.list-group {
+  padding-top: 15px;
 }
