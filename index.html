@@ -38,7 +38,7 @@
       <div class="row">
 
         <!-- Left Column - Search Activity -->
-        <div class="col-sm-4">
+        <div class="col-sm-3">
 
           <!-- Tier 4 Heading -->
           <h4>Search for a City:</h4>
@@ -59,7 +59,7 @@
           <!-- Unordered List Responsive -->
           <ul class="list-group">
 
-            <!-- Li: Searched cities to appear here -->
+            <!-- li: Searched cities to appear here dynamically-->
             <li class="list-group-item">Dublin 1</li>
             <li class="list-group-item">Dublin 2</li>
             <li class="list-group-item">Dublin 3</li>
@@ -69,9 +69,17 @@
             <li class="list-group-item">Dublin 7</li>
           </ul>
         </div>
-        <div class="col-sm-8">
+
+        <!-- Right Column - Weather for City -->
+        <div class="col-sm-9">
+
+          <!-- Column for City's Current Weather -->
           <div class="col-sm-12 rounded border">
-            <ul class="list-group">
+
+            <!-- Unordered List -->
+            <ul class="list-group today-ul">
+
+              <!-- li: Cities weather stats to appear here dynamically -->
               <li class="list-group-item current"><h2>Dublin 1 (12/06/2020)</h2></li>
               <li class="list-group-item current">Temperature: 90.9 F</li>
               <li class="list-group-item current">Humidity: 41%</li>
@@ -79,29 +87,72 @@
               <li class="list-group-item current">UV Index: <span class="rounded rounded-uv">9.49</span></li>
             </ul>
           </div>
-          <div class="col-sm-12">
-            One of two columns
+
+          <!-- Column for Cities 5-Day Forecast -->
+          <div class="col-sm-12 forecast-div">
+
+            <!-- Tier 2 Heading -->
+            <h2>5-Day Forecast</h2>
+
+            <!-- Row to hold each day forecast -->
+            <div class="row forecast-row">
+
+              <!-- divs to appear here holding each day forecast -->
+              <div class="col-sm-2.4 rounded border forecast-day">
+                <ul class="list-group today-ul">
+                  <li class="list-group-item current"><h4>13/06/2020</h4></li>
+                  <li class="list-group-item current">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </li>
+                  <li class="list-group-item current">Temp: 90.9 F</li>
+                  <li class="list-group-item current">Humidity: 41%</li>
+                </ul>
+              </div>
+              <div class="col-sm-2.4 rounded border forecast-day">
+                <ul class="list-group today-ul">
+                  <li class="list-group-item current"><h4>13/06/2020</h4></li>
+                  <li class="list-group-item current">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </li>
+                  <li class="list-group-item current">Temp: 90.9 F</li>
+                  <li class="list-group-item current">Humidity: 41%</li>
+                </ul>
+              </div>
+              <div class="col-sm-2.4 rounded border forecast-day">
+                <ul class="list-group today-ul">
+                  <li class="list-group-item current"><h4>13/06/2020</h4></li>
+                  <li class="list-group-item current">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </li>
+                  <li class="list-group-item current">Temp: 90.9 F</li>
+                  <li class="list-group-item current">Humidity: 41%</li>
+                </ul>
+              </div>
+              <div class="col-sm-2.4 rounded border forecast-day">
+                <ul class="list-group today-ul">
+                  <li class="list-group-item current"><h4>13/06/2020</h4></li>
+                  <li class="list-group-item current">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </li>
+                  <li class="list-group-item current">Temp: 90.9 F</li>
+                  <li class="list-group-item current">Humidity: 41%</li>
+                </ul>
+              </div>
+              <div class="col-sm-2.4 rounded border forecast-day">
+                <ul class="list-group today-ul">
+                  <li class="list-group-item current"><h4>13/06/2020</h4></li>
+                  <li class="list-group-item current">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </li>
+                  <li class="list-group-item current">Temp: 90.9 F</li>
+                  <li class="list-group-item current">Humidity: 41%</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Footer -->
-    <footer>
-      <nav class="navbar fixed-bottom navbar-dark bg-secondary justify-content-center">
-        <a class="navbar-brand" href="./index.html">&copy; Darren Behan</a>
-      </nav>
-    </footer>
-
-    <!-- // Pseudocode
-
-    // Right Column
-      // Current days weather
-        // Dynamically append one column showing current day weather based on search
-        // If page reloads, recent search appears
-      // 5 day forecast
-        // Dynamically append a columns showing the next 5 days forecast
-        // If page reloads, recent search appears -->
         
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
