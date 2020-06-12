@@ -1,0 +1,26 @@
+/* Body styling */
+
+body {
+  box-sizing: border-box;
+}
+
+/* Header */
+
+.navbar-brand {
+  margin: 0;
+}
+
+/* Main container */
+
+.container {
+  min-height: 100vh; /* covers 100% of viewport */
+  position: relative;
+  margin: 0 !important;
+}
+
+/* Search Column */
+
+.col-sm-4 {
+  background-color: rgb(247, 247, 247);
+  padding: 15px;
+}
