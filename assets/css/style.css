@@ -28,7 +28,7 @@ body {
   padding: 15px;
 }
 
-.today-ul, .forecast-div {
+.today-div, .forecast-div {
   padding: 15px 0;
 }
 
@@ -45,7 +45,13 @@ body {
   padding: 5px 15px;
 }
 
-.forecast-day {
+.forecast-day, .forecast-date-div, .forecast-favicon-div, .forecast-temp-div, .forecast-humidity-div {
+  background-color: #007bff;
+  color: white;
   margin: 5px 5px;
-  padding: 5px 12.62px;
+  padding: 5px 13.75px;
 }
+
+/* .forecast-date-div, .forecast-favicon-div, .forecast-temp-div, .forecast-humidity-div {
+  
+} */
