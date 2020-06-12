@@ -4,7 +4,7 @@
 
 // Create variables
 
-var recentlySearchedCitiesArray = [];
+var recentlySearchedCitiesArray = ["Dublin 1", "Dublin 2", "Dublin 3", "Dublin 4", "Dublin 5", "Dublin 6", "Dublin 7", "Dublin 8",];
 var numberOfCitiesSearched = 0;
 
 init();
@@ -25,6 +25,20 @@ function init() {
 // Create a function to append recently searched cities to the search box
 
 function renderRecentSearchesElements() {
+
+  recentSearchUl = $(".search-ul");
+
+  for (var i = 0; i < recentlySearchedCitiesArray.length; i++) {
+    recentSearchLi = $("<li>");
+
+    recentSearchLi.attr("class", "list-group-item");
+
+    recentSearchLi.html(recentlySearchedCitiesArray[i]);
+
+    recentSearchUl.append(recentSearchLi);
+  }
+
+
   storeSearchedCities();
   console.log("Recent Searches HTML");
 }
