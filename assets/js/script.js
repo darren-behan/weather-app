@@ -3,13 +3,23 @@
 var searchForm = $("#search-form");
 var searchText = $("#input-text");
 var searchedCities = $("#search-ul");
+var currentWeatherDiv = $(".rounded");
+var weatherTodayDiv = $("<div>");
+var weatherDateDiv = $("<div>");
+var weatherDateH2 = $("<h2>");
+var weatherTempDiv = $("<div>");
+var weatherHumidityDiv = $("<div>");
+var weatherWindDiv = $("<div>");
+var weatherUvIndexDiv = $("<div>");
 
 var recentlySearchedCitiesArray = [];
 
 // OpenWeatherMap API Key
 var APIKey = "a9bd055528b6c2f7e0ed40218ab0ce62";
 // Building the URL required to query the database
-var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=Bujumbura,Burundi&units=metric&appid=" + APIKey;
+var queryURL =
+  "https://api.openweathermap.org/data/2.5/weather?q=Bujumbura,Burundi&units=metric&appid=" +
+  APIKey;
 
 init();
 
@@ -24,62 +34,65 @@ function renderSearchHistory() {
 
   // Render a new li for each city searched
   for (var i = 0; i < 8; i++) {
-
     city = recentlySearchedCitiesArray[i];
 
-    var recentSearchLi = $("<li>").attr("class", "list-group-item").data("index", i).text(city);
+    var recentSearchLi = $("<li>")
+      .attr("class", "list-group-item")
+      .data("index", i)
+      .text(city);
 
     searchedCities.append(recentSearchLi);
   }
 }
 
-// Create a function to call and store the API data
+// Create a function to call and store the current weather data & append the weather for the city searched for the current day
 
-function apiCallCurrentWeather() {
+function renderCurrentWeather() {
   // Create an AJAX call to retrieve current weather
   $.ajax({
     url: queryURL,
-    method: "GET"
-  }).then(function(response) {
-    var currentTemperature = response.main.temp;
-    var currentHumidity = response.main.humidity;
-    var currentWindSpeed = response.wind.speed;
-    var cityCoordLat = response.coord.lat;
-    var cityCoordLon = response.coord.lon;
+    method: "GET",
+  }).then(function (response) {
+    currentTemperature = response.main.temp;
+    currentHumidity = response.main.humidity;
+    currentWindSpeed = response.wind.speed;
+    cityCoordLat = response.coord.lat;
+    cityCoordLon = response.coord.lon;
+
+    weatherTodayDiv.attr("class", "list-group today-ul");
+    weatherDateDiv.attr("class", "list-group-item current title");
+    weatherDateH2.text("Dublin 1 (12/06/2020)");
+    weatherTempDiv
+      .attr("class", "list-group-item current temp")
+      .text("Temperature: " + currentTemperature);
+    weatherHumidityDiv
+      .attr("class", "list-group-item current humidity")
+      .text("Humidity: " + currentHumidity);
+    weatherWindDiv
+      .attr("class", "list-group-item current wind")
+      .text("Wind Speed: " + currentWindSpeed);
 
     // Separate AJAX call to retrieve UV Index
     $.ajax({
-      url: "https://api.openweathermap.org/data/2.5/uvi?lat=" + cityCoordLat + "&lon=" + cityCoordLon + "&appid=" + APIKey,
-      method: "GET"
-    }).then(function(response) {
-      var currentUvIndex = response.value;
+      url:
+        "https://api.openweathermap.org/data/2.5/uvi?lat=" +
+        cityCoordLat +
+        "&lon=" +
+        cityCoordLon +
+        "&appid=" +
+        APIKey,
+      method: "GET",
+    }).then(function (response) {
+      currentUvIndex = response.value;
+      weatherUvIndexDiv
+        .attr("class", "list-group-item current uv-index")
+        .text("UV Index: ");
+      weatherUvIndexDiv.append($("<span />", {
+        class: "rounded rounded-uv",
+        text: currentUvIndex
+      }));
     });
-    
   });
-}
-
-// Create a function to append the weather for the city searched for the current day
-
-function renderCurrentWeather() {
-  currentWeatherDiv = $(".rounded");
-  weatherTodayDiv = $("<div>").attr("class", "list-group today-ul");
-  weatherDateDiv = $("<div>").attr("class", "list-group-item current title");
-  weatherDateH2 = $("<h2>").text("Dublin 1 (12/06/2020");
-  weatherTempDiv = $("<div>")
-    .attr("class", "list-group-item current temp")
-    .text("Temperature: 90.9 F");
-  weatherHumidityDiv = $("<div>")
-    .attr("class", "list-group-item current humidity")
-    .text("Humidity: 41%");
-  weatherWindDiv = $("<div>")
-    .attr("class", "list-group-item current wind")
-    .text("Wind Speed: 4.7 KMPH");
-  weatherUvIndexDiv = $("<div>")
-    .attr("class", "list-group-item current uv-index")
-    .text("UV Index: ");
-  weatherUvIndexSpan = $("<span>")
-    .attr("class", "rounded rounded-uv")
-    .text("9.49");
 
   currentWeatherDiv.append(weatherTodayDiv);
   weatherTodayDiv.append(weatherDateDiv);
@@ -88,7 +101,6 @@ function renderCurrentWeather() {
   weatherTodayDiv.append(weatherHumidityDiv);
   weatherTodayDiv.append(weatherWindDiv);
   weatherTodayDiv.append(weatherUvIndexDiv);
-  weatherUvIndexDiv.append(weatherUvIndexSpan);
 }
 
 // Create a function to initialize (init) the app
@@ -105,7 +117,6 @@ function init() {
 
   // Render cities to the DOM
   renderSearchHistory();
-  apiCallCurrentWeather();
   renderCurrentWeather();
   renderFiveDayForecastElements();
 }
@@ -122,7 +133,7 @@ function locallyStoreSearchedCities() {
 // Create a click event for the city search box
 // This event will update the recentlySearchedCitiesArray via storeSearchedCities() which will renderRecentSearchesElements()
 
-$(document).on("submit", searchForm, function(event) {
+$(document).on("submit", searchForm, function (event) {
   event.preventDefault();
 
   // Store the text from the input
@@ -140,7 +151,6 @@ $(document).on("submit", searchForm, function(event) {
   // Store updated recentlySearchedCitiesArray in localStorage, re-render the list
   locallyStoreSearchedCities();
   renderSearchHistory();
-  apiCallCurrentWeather();
   renderCurrentWeather();
 });
 
