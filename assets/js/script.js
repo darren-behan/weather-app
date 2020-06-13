@@ -1,15 +1,26 @@
+// Initialize function to load page based on last searched city
+
+  // renderRecentSearchesElements();
+    // 
+  // renderCurrentWeather();
+  // renderFiveDayForecastElements();
+
+// Click event to search for city
+
+  // storeSearchedCities();
+  // renderRecentSearchesElements();
+
+  // AJAX request to get current weather & 5-Day forecast for city searched
+
+    
+    // locallyStoreSearchedCities();
+
 // Create variables
 
-var recentlySearchedCitiesArray = [
-  "Dublin 1",
-  "Dublin 2",
-  "Dublin 3",
-  "Dublin 4",
-  "Dublin 5",
-  "Dublin 6",
-  "Dublin 7",
-  "Dublin 8",
-];
+var searchForm = $("#search-form");
+var searchText = $("#input-text");
+var searchedCities = $("#search-ul");
+var recentlySearchedCitiesArray = [];
 var numberOfCitiesSearched = [
   "Temp: 90.9 F",
   "Temp: 90.9 F",
@@ -20,49 +31,81 @@ var numberOfCitiesSearched = [
 
 init();
 
-// Event Listeners
+// Create a function to append recently searched cities to the search box
 
-// Create a click event for the city search box
-// This event will update the recentlySearchedCitiesArray via storeSearchedCities() which will renderRecentSearchesElements()
+function renderSearchHistory() {
+  // Clear todoList element and update todoCountSpan
+  searchedCities.html("");
+
+  // Reverse recentlySearchedCitiesArray
+  recentlySearchedCitiesArray.reverse();
+
+  // Render a new li for each city searched
+  for (var i = 0; i < 8; i++) {
+    city = recentlySearchedCitiesArray[i];
+
+    var recentSearchLi = $("<li>").attr("class", "list-group-item").data("index", i).text(city);
+
+    searchedCities.append(recentSearchLi);
+  }
+}
 
 // Create a function to initialize (init) the app
 
 function init() {
-  renderRecentSearchesElements();
-  renderCurrentWeather();
-  renderFiveDayForecastElements();
-}
+  // Get stored cities from localStorage
+  // Parsing the JSON string to an object
+  var storedCities = JSON.parse(localStorage.getItem("cities"));
 
-// Create a function to append recently searched cities to the search box
-
-function renderRecentSearchesElements() {
-  recentSearchUl = $(".search-ul");
-
-  for (var i = 0; i < recentlySearchedCitiesArray.length; i++) {
-    recentSearchLi = $("<li>");
-
-    recentSearchLi.attr("class", "list-group-item");
-
-    recentSearchLi.html(recentlySearchedCitiesArray[i]);
-
-    recentSearchUl.append(recentSearchLi);
+  // If cities were retrieved from localStorage, update the recentlySearchedCitiesArray to it
+  if (storedCities !== null) {
+    recentlySearchedCitiesArray = storedCities;
   }
 
-  storeSearchedCities();
-}
-
-// Create a function to store the recently searched cities to a max of 8 within the array and ensuring the last searched city (in index 7) is removed with the most recent searched city taking index 0
-
-function storeSearchedCities(city) {
-  console.log("Cities Searched Array");
-  locallyStoreSearchedCities();
+  // Render cities to the DOM
+  renderSearchHistory();
+  renderCurrentWeather();
+  renderFiveDayForecastElements();
 }
 
 // Create a function to locally store the search cities
 
 function locallyStoreSearchedCities() {
-  console.log("I'm a locally stored array");
+  // Stringify and set "cities" key in localStorage to recentlySearchedCitiesArray
+  localStorage.setItem("cities", JSON.stringify(recentlySearchedCitiesArray));
 }
+
+// Event Listeners
+
+// Create a click event for the city search box
+// This event will update the recentlySearchedCitiesArray via storeSearchedCities() which will renderRecentSearchesElements()
+
+$(document).on("submit", searchForm, function(event) {
+  event.preventDefault();
+
+  // Store the text from the input
+  var cityTextArray = searchText.val().trim();
+
+  // Return from function early if submitted cityText is blank
+  if (cityTextArray === "") {
+    return;
+  }
+
+  // Add new cityText to recentlySearchedCitiesArray, clear the input
+  recentlySearchedCitiesArray.push(cityTextArray);
+  searchText.val("");
+
+  // Store updated recentlySearchedCitiesArray in localStorage, re-render the list
+  locallyStoreSearchedCities();
+  renderSearchHistory();
+});
+
+// Create a function to store the recently searched cities to a max of 8 within the array and ensuring the last searched city (in index 7) is removed with the most recent searched city taking index 0
+
+// function storeSearchedCities(city) {
+  
+//   locallyStoreSearchedCities();
+// }
 
 // Create a function to append the weather for the city searched for the current day
 
