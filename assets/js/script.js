@@ -1,7 +1,3 @@
-// Pseudocode
-
-// JS
-
 // Create variables
 
 var recentlySearchedCitiesArray = [
@@ -14,7 +10,13 @@ var recentlySearchedCitiesArray = [
   "Dublin 7",
   "Dublin 8",
 ];
-var numberOfCitiesSearched = ["Temp: 90.9 F", "Temp: 90.9 F", "Temp: 90.9 F", "Temp: 90.9 F", "Temp: 90.9 F", ];
+var numberOfCitiesSearched = [
+  "Temp: 90.9 F",
+  "Temp: 90.9 F",
+  "Temp: 90.9 F",
+  "Temp: 90.9 F",
+  "Temp: 90.9 F",
+];
 
 init();
 
@@ -65,7 +67,34 @@ function locallyStoreSearchedCities() {
 // Create a function to append the weather for the city searched for the current day
 
 function renderCurrentWeather() {
-  console.log("Current weather HTML");
+  currentWeatherDiv = $(".rounded");
+  weatherTodayDiv = $("<div>").attr("class", "list-group today-ul");
+  weatherDateDiv = $("<div>").attr("class", "list-group-item current title");
+  weatherDateH2 = $("<h2>").text("Dublin 1 (12/06/2020");
+  weatherTempDiv = $("<div>")
+    .attr("class", "list-group-item current temp")
+    .text("Temperature: 90.9 F");
+  weatherHumidityDiv = $("<div>")
+    .attr("class", "list-group-item current humidity")
+    .text("Humidity: 41%");
+  weatherWindDiv = $("<div>")
+    .attr("class", "list-group-item current wind")
+    .text("Wind Speed: 4.7 KMPH");
+  weatherUvIndexDiv = $("<div>")
+    .attr("class", "list-group-item current uv-index")
+    .text("UV Index: ");
+  weatherUvIndexSpan = $("<span>")
+    .attr("class", "rounded rounded-uv")
+    .text("9.49");
+
+  currentWeatherDiv.append(weatherTodayDiv);
+  weatherTodayDiv.append(weatherDateDiv);
+  weatherDateDiv.append(weatherDateH2);
+  weatherTodayDiv.append(weatherTempDiv);
+  weatherTodayDiv.append(weatherHumidityDiv);
+  weatherTodayDiv.append(weatherWindDiv);
+  weatherTodayDiv.append(weatherUvIndexDiv);
+  weatherUvIndexDiv.append(weatherUvIndexSpan);
 }
 
 // Create a function to append the 5 day forecast for the city searched
@@ -74,38 +103,23 @@ function renderFiveDayForecastElements() {
   forecastRow = $(".forecast-row");
 
   for (var i = 0; i < 5; i++) {
-    forecastDiv = $("<div>");
-    forecastDiv.attr("class", "col-sm-2.4 rounded border forecast-day");
-
-    forecastTodayDiv = $("<div>");
-    forecastTodayDiv.attr("class", "list-group today-ul");
-
-    forecastDateDiv = $("<div>");
-    forecastDateDiv.attr("class", "forecast-date-div");
-
-    forecastFaviconDiv = $("<div>");
-    forecastFaviconDiv.attr("class", "forecast-favicon-div");
-
-    forecastTempDiv = $("<div>");
-    forecastTempDiv.attr("class", "forecast-temp-div");
-
-    forecastHumidityDiv = $("<div>");
-    forecastHumidityDiv.attr("class", "forecast-humidity-div");
-
-    forecastH4 = $("<h4>");
-    forecastH4.html("13/06/2020");
-
-    forecastFa = $("<i>");
-    forecastFa.attr("class", "fa fa-search");
-    forecastFa.attr("aria-hidden", "true");
-
-    forecastSpanTemp = $("<span>");
-    forecastSpanTemp.attr("class", "temp");
-    forecastSpanTemp.html("Temp: 90.9 F");
-
-    forecastSpanHumidity = $("<span>");
-    forecastSpanHumidity.attr("class", "humidity");
-    forecastSpanHumidity.html("Humidity: 41%");
+    forecastDiv = $("<div>").attr(
+      "class",
+      "col-sm-2.4 rounded border forecast-day"
+    );
+    forecastTodayDiv = $("<div>").attr("class", "list-group today-ul");
+    forecastDateDiv = $("<div>").attr("class", "forecast-date-div");
+    forecastFaviconDiv = $("<div>").attr("class", "forecast-favicon-div");
+    forecastTempDiv = $("<div>").attr("class", "forecast-temp-div");
+    forecastHumidityDiv = $("<div>").attr("class", "forecast-humidity-div");
+    forecastH4 = $("<h4>").html("13/06/2020");
+    forecastFa = $("<i>")
+      .attr("class", "fa fa-search")
+      .attr("aria-hidden", "true");
+    forecastSpanTemp = $("<span>").attr("class", "temp").html("Temp: 90.9 F");
+    forecastSpanHumidity = $("<span>")
+      .attr("class", "humidity")
+      .html("Humidity: 41%");
 
     forecastRow.append(forecastDiv);
     forecastDiv.append(forecastTodayDiv);
