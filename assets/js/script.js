@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-  // Create variables
+  // Create HTML variables
 
   var leftColumn = $(".col-sm-3");
   var current = $("#current");
@@ -16,6 +16,11 @@ $(document).ready(function () {
   var weatherHumidityDiv = $("<div>");
   var weatherWindDiv = $("<div>");
   var weatherUvIndexDiv = $("<div>");
+  var forecastMainDiv = $(".forecast-div");
+  var forecastHeading = $("#forecast-heading");
+  var forecastRow = $(".forecast-row");
+
+  // Create Array variables
 
   var recentlySearchedCitiesArray = [];
   var city = [];
@@ -46,7 +51,7 @@ $(document).ready(function () {
     recentlySearchedCitiesArray.reverse();
 
     // Render a new li for each city searched
-    for (var i = 0; i < 8; i++) {
+    for (var i = 0; i < recentlySearchedCitiesArray.length; i++) {
       city = recentlySearchedCitiesArray[i];
 
       var recentSearchLi = $("<li>")
@@ -78,6 +83,7 @@ $(document).ready(function () {
         APIKey,
       method: "GET",
     }).then(function (response) {
+      cityID = response.id;
       currentTemperature = Math.floor(response.main.temp);
       currentIcon = response.weather[0].icon;
       currentHumidity = response.main.humidity;
@@ -94,7 +100,7 @@ $(document).ready(function () {
         .text("Temperature: " + currentTemperature + " degrees celcius");
       weatherHumidityDiv
         .attr("class", "list-group-item current humidity")
-        .text("Humidity: " + currentHumidity);
+        .text("Humidity: " + currentHumidity + "%");
       weatherWindDiv
         .attr("class", "list-group-item current wind")
         .text("Wind Speed: " + currentWindSpeed);
@@ -131,6 +137,58 @@ $(document).ready(function () {
     weatherTodayDiv.append(weatherUvIndexDiv);
   }
 
+  // Create a function to append the 5 day forecast for the city searched
+
+  function renderFiveDayForecast() {
+    if (recentlySearchedCitiesArray[0] !== undefined) {
+      forecastHeading.text("5-Day Forecast"); 
+    } else {
+      forecastHeading.html = "";
+      return;
+    }
+
+    // Create an AJAX call to retrieve current weather
+    $.ajax({
+      url: "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=metric&appid=" +
+      APIKey,
+      method: "GET",
+    }).then(function (response) {
+      listIndex = response.list;
+      console.log(listIndex);
+      listIndex.forEach(function(item, index) {
+        if (index % 7 === 0 && index !== 0) {
+          console.log(index);
+          console.log(item);
+
+          forecastDiv = $("<div>").attr(
+            "class",
+            "col-sm-2.4 rounded border forecast-day"
+          );
+          forecastTodayDiv = $("<div>").attr("class", "list-group today-ul");
+          forecastDateDiv = $("<div>").attr("class", "forecast-date-div");
+          forecastTempDiv = $("<div>").attr("class", "forecast-temp-div");
+          forecastHumidityDiv = $("<div>").attr("class", "forecast-humidity-div");
+          forecastH4 = $("<h4>").html(item.dt_txt);
+          forecastImg = $("<img>").attr("src", "https://openweathermap.org/img/w/" + item.weather[0].icon + ".png");
+          forecastSpanTemp = $("<span>").attr("class", "temp").html("Temp: " + item.main.temp + " degrees celcius");
+          forecastSpanHumidity = $("<span>")
+          .attr("class", "humidity")
+          .html("Humidity: " + item.main.humidity + "%");
+
+          forecastRow.append(forecastDiv);
+          forecastDiv.append(forecastTodayDiv);
+          forecastTodayDiv.append(forecastDateDiv);
+          forecastDateDiv.append(forecastH4);
+          forecastDateDiv.append(forecastImg);
+          forecastTodayDiv.append(forecastTempDiv);
+          forecastTempDiv.append(forecastSpanTemp);
+          forecastTodayDiv.append(forecastHumidityDiv);
+          forecastHumidityDiv.append(forecastSpanHumidity);
+        }
+      });
+    });
+  }
+
   // Create a function to initialize (init) the app
 
   function init() {
@@ -146,7 +204,7 @@ $(document).ready(function () {
     // Render cities to the DOM
     renderSearchHistory();
     renderWeather();
-    renderFiveDayForecastElements();
+    renderFiveDayForecast();
   }
 
   // Create a function to locally store the search cities
@@ -180,42 +238,6 @@ $(document).ready(function () {
     locallyStoreSearchedCities();
     renderSearchHistory();
     renderWeather();
+    renderFiveDayForecast();
   });
-
-  // Create a function to append the 5 day forecast for the city searched
-
-  function renderFiveDayForecastElements() {
-    forecastRow = $(".forecast-row");
-
-    for (var i = 0; i < 5; i++) {
-      forecastDiv = $("<div>").attr(
-        "class",
-        "col-sm-2.4 rounded border forecast-day"
-      );
-      forecastTodayDiv = $("<div>").attr("class", "list-group today-ul");
-      forecastDateDiv = $("<div>").attr("class", "forecast-date-div");
-      forecastFaviconDiv = $("<div>").attr("class", "forecast-favicon-div");
-      forecastTempDiv = $("<div>").attr("class", "forecast-temp-div");
-      forecastHumidityDiv = $("<div>").attr("class", "forecast-humidity-div");
-      forecastH4 = $("<h4>").html("13/06/2020");
-      forecastFa = $("<i>")
-        .attr("class", "fa fa-search")
-        .attr("aria-hidden", "true");
-      forecastSpanTemp = $("<span>").attr("class", "temp").html("Temp: 90.9 F");
-      forecastSpanHumidity = $("<span>")
-        .attr("class", "humidity")
-        .html("Humidity: 41%");
-
-      forecastRow.append(forecastDiv);
-      forecastDiv.append(forecastTodayDiv);
-      forecastTodayDiv.append(forecastDateDiv);
-      forecastDateDiv.append(forecastH4);
-      forecastTodayDiv.append(forecastFaviconDiv);
-      forecastFaviconDiv.append(forecastFa);
-      forecastTodayDiv.append(forecastTempDiv);
-      forecastTempDiv.append(forecastSpanTemp);
-      forecastTodayDiv.append(forecastHumidityDiv);
-      forecastHumidityDiv.append(forecastSpanHumidity);
-    }
-  }
 });

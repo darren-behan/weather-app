@@ -45,7 +45,7 @@ body {
   padding: 5px 15px;
 }
 
-.forecast-day, .forecast-date-div, .forecast-favicon-div, .forecast-temp-div, .forecast-humidity-div {
+.forecast-day, .forecast-date-div, .forecast-temp-div, .forecast-humidity-div {
   background-color: #007bff;
   color: white;
   margin: 5px 5px;
