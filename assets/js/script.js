@@ -16,7 +16,6 @@ $(document).ready(function () {
   var weatherHumidityDiv = $("<div>");
   var weatherWindDiv = $("<div>");
   var weatherUvIndexDiv = $("<div>");
-  var forecastMainDiv = $(".forecast-div");
   var forecastHeading = $("#forecast-heading");
   var forecastRow = $(".forecast-row");
 
@@ -51,7 +50,7 @@ $(document).ready(function () {
     recentlySearchedCitiesArray.reverse();
 
     // Render a new li for each city searched
-    for (var i = 0; i < recentlySearchedCitiesArray.length; i++) {
+    for (var i = 0; i < Math.min(8, recentlySearchedCitiesArray.length); i++) {
       city = recentlySearchedCitiesArray[i];
 
       var recentSearchLi = $("<li>")
@@ -154,12 +153,10 @@ $(document).ready(function () {
       method: "GET",
     }).then(function (response) {
       listIndex = response.list;
-      console.log(listIndex);
+      forecastRow.empty();
+
       listIndex.forEach(function(item, index) {
         if (index % 7 === 0 && index !== 0) {
-          console.log(index);
-          console.log(item);
-
           forecastDiv = $("<div>").attr(
             "class",
             "col-sm-2.4 rounded border forecast-day"
@@ -170,7 +167,7 @@ $(document).ready(function () {
           forecastHumidityDiv = $("<div>").attr("class", "forecast-humidity-div");
           forecastH4 = $("<h4>").html(item.dt_txt);
           forecastImg = $("<img>").attr("src", "https://openweathermap.org/img/w/" + item.weather[0].icon + ".png");
-          forecastSpanTemp = $("<span>").attr("class", "temp").html("Temp: " + item.main.temp + " degrees celcius");
+          forecastSpanTemp = $("<span>").attr("class", "temp").html("Temp: " + Math.round(item.main.temp) + " degrees celcius");
           forecastSpanHumidity = $("<span>")
           .attr("class", "humidity")
           .html("Humidity: " + item.main.humidity + "%");
