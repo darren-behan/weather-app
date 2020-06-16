@@ -28,7 +28,7 @@ $(document).ready(function () {
   var APIKey = "a9bd055528b6c2f7e0ed40218ab0ce62";
 
   // moment.js
-  var currentDate = moment().format("dddd, MMMM Do YYYY");
+  var currentDate = moment().format("dddd, MMMM Do");
 
   init();
 
@@ -165,9 +165,9 @@ $(document).ready(function () {
           forecastDateDiv = $("<div>").attr("class", "forecast-date-div");
           forecastTempDiv = $("<div>").attr("class", "forecast-temp-div");
           forecastHumidityDiv = $("<div>").attr("class", "forecast-humidity-div");
-          forecastH4 = $("<h4>").html(item.dt_txt);
+          forecastH4 = $("<h4>").html(setDate(index));
           forecastImg = $("<img>").attr("src", "https://openweathermap.org/img/w/" + item.weather[0].icon + ".png");
-          forecastSpanTemp = $("<span>").attr("class", "temp").html("Temp: " + Math.round(item.main.temp) + " degrees celcius");
+          forecastSpanTemp = $("<span>").attr("class", "temp").html("Temp: " + Math.round(item.main.temp) + " degrees");
           forecastSpanHumidity = $("<span>")
           .attr("class", "humidity")
           .html("Humidity: " + item.main.humidity + "%");
@@ -184,6 +184,25 @@ $(document).ready(function () {
         }
       });
     });
+  }
+
+  function setDate(index) {
+    if (index === 7) {
+      var dateOne = moment().add(1,'days').format("MMMM Do");
+      return dateOne;
+    } else if (index === 14) {
+      var dateTwo = moment().add(2,'days').format("MMMM Do");
+      return dateTwo;
+    } else if (index === 21) {
+      var dateTwo = moment().add(3,'days').format("MMMM Do");
+      return dateTwo;
+    } else if (index === 28) {
+      var dateTwo = moment().add(4,'days').format("MMMM Do");
+      return dateTwo;
+    } else if (index === 35) {
+      var dateTwo = moment().add(5,'days').format("MMMM Do");
+      return dateTwo;
+    }
   }
 
   // Create a function to initialize (init) the app
