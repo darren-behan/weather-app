@@ -3,10 +3,10 @@ $(document).ready(function () {
   // Create HTML variables
 
   var leftColumn = $(".col-sm-3");
-  var current = $("#current");
   var searchForm = $("#search-form");
   var searchText = $("#input-text");
   var searchedCities = $("#search-ul");
+  var buttonDiv = $(".button-div");
   var currentWeatherDiv = $(".rounded");
   var weatherTodayDiv = $("<div>");
   var weatherDateDiv = $("<div>");
@@ -42,9 +42,12 @@ $(document).ready(function () {
     } else {
       // Clear searchedCities element & exit function
       searchedCities.html("");
+      buttonDiv.hide();
       leftColumn.css("background-color", "rgb(255, 255, 255)");
       return;
     }
+
+    buttonDiv.show();
 
     // Reverse recentlySearchedCitiesArray
     recentlySearchedCitiesArray.reverse();
@@ -62,17 +65,29 @@ $(document).ready(function () {
     }
   }
 
+  // Create a function to clear the recent search history
+  function renderClearSearchHistoryButton() {
+    buttonDiv.hide();
+    
+    // Clear the array storing the searched cities
+    recentlySearchedCitiesArray = [];
+
+    // Clearing the searched cities
+    searchedCities.html("");
+
+    // Clear localStorage
+    localStorage.clear();
+  }
+
   // Create a function to call and store the current weather data & append the weather for the city searched for the current day
 
   function renderWeather() {
     if (recentlySearchedCitiesArray[0] !== undefined) {
       // Store city searched in city array
       city = recentlySearchedCitiesArray[0];
-      current.css("border", "1px solid #dee2e6!important");
     } else {
       // Clear currentWeatherDiv & exit function
       currentWeatherDiv.html("");
-      current.css("box-shadow", "none");
       return;
     }
 
@@ -255,5 +270,12 @@ $(document).ready(function () {
     renderSearchHistory();
     renderWeather();
     renderFiveDayForecast();
+  });
+
+  // Click event for save button
+  $(".clear").on("click", function(event) {
+    event.preventDefault();
+
+    renderClearSearchHistoryButton();
   });
 });
