@@ -18,6 +18,10 @@ body {
   padding: 15px;
 }
 
+#input-text {
+  max-width: 100%;
+}
+
 .list-group {
   padding-top: 15px;
 }
