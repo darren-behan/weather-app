@@ -59,10 +59,14 @@ $(document).ready(function () {
 
       var recentSearchLi = $("<li>")
         .attr("class", "list-group-item")
-        .data("index", i)
+        .data("index", i);
+      var recentSearchButton = $("<button>")
+        .attr("class", "btn btn-light")
+        .attr("type", "button")
         .text(city);
 
       searchedCities.append(recentSearchLi);
+      recentSearchLi.append(recentSearchButton);
     }
   }
 
@@ -118,7 +122,7 @@ $(document).ready(function () {
         .text("Humidity: " + currentHumidity + "%");
       weatherWindDiv
         .attr("class", "list-group-item current wind")
-        .text("Wind Speed: " + currentWindSpeed);
+        .text("Wind Speed: " + currentWindSpeed + " kmph");
 
       // Separate AJAX call to retrieve UV Index
       $.ajax({
@@ -150,15 +154,14 @@ $(document).ready(function () {
     weatherTodayDiv.append(weatherUvIndexDiv);
   }
 
-  function setUvIndexBackgroundColor(currentUvIndex) {
-    console.log(currentUvIndex);
-    if (currentUvIndex <= 2) {
+  function setUvIndexBackgroundColor(uvIndex) {
+    if (uvIndex <= 2) {
       return weatherUvIndexSpan.css("background-color", "green");
-    } else if (currentUvIndex > 2 && currentUvIndex <= 5) {
+    } else if (uvIndex > 2 && uvIndex <= 5) {
       return weatherUvIndexSpan.css("background-color", "yellow");
-    } else if (currentUvIndex > 5 && currentUvIndex <= 7) {  
+    } else if (uvIndex > 5 && uvIndex <= 7) {  
       return weatherUvIndexSpan.css("background-color", "orange");
-    } else if (currentUvIndex > 7 && currentUvIndex <= 10) {
+    } else if (uvIndex > 7 && uvIndex <= 10) {
       return weatherUvIndexSpan.css("background-color", "red");
     } else {
       return weatherUvIndexSpan.css("background-color", "purple");
@@ -264,7 +267,7 @@ $(document).ready(function () {
   // Create a click event for the city search box
   // This event will update the recentlySearchedCitiesArray via storeSearchedCities() which will renderRecentSearchesElements()
 
-  $(document).on("submit", searchForm, function (event) {
+  $(document).on("submit", searchForm, function(event) {
     event.preventDefault();
 
     // Store the text from the input
@@ -285,6 +288,22 @@ $(document).ready(function () {
     renderWeather();
     renderFiveDayForecast();
   });
+
+  $(".btn-light").on("click", function(event) {
+    event.preventDefault();
+
+    // Store the html from the button
+    var cityTextArray = $(this).html().trim();
+        
+    // Add new cityText to recentlySearchedCitiesArray
+    recentlySearchedCitiesArray.push(cityTextArray);
+
+    // Store updated recentlySearchedCitiesArray in localStorage, re-render the list
+    locallyStoreSearchedCities();
+    renderSearchHistory();
+    renderWeather();
+    renderFiveDayForecast();
+  })
 
   // Click event for save button
   $(".clear").on("click", function(event) {
