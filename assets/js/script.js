@@ -16,6 +16,7 @@ $(document).ready(function () {
   var weatherHumidityDiv = $("<div>");
   var weatherWindDiv = $("<div>");
   var weatherUvIndexDiv = $("<div>");
+  var weatherUvIndexSpan = $("<span>");
   var forecastHeading = $("#forecast-heading");
   var forecastRow = $(".forecast-row");
 
@@ -66,7 +67,7 @@ $(document).ready(function () {
   }
 
   // Create a function to clear the recent search history
-  function renderClearSearchHistoryButton() {
+  function clearSearchHistory() {
     buttonDiv.hide();
     
     // Clear the array storing the searched cities
@@ -111,7 +112,7 @@ $(document).ready(function () {
       weatherImg.attr("src", "https://openweathermap.org/img/w/" + currentIcon + ".png");
       weatherTempDiv
         .attr("class", "list-group-item current temp")
-        .text("Temperature: " + currentTemperature + " degrees celcius");
+        .text("Temperature: " + currentTemperature + " degrees celsius");
       weatherHumidityDiv
         .attr("class", "list-group-item current humidity")
         .text("Humidity: " + currentHumidity + "%");
@@ -134,10 +135,8 @@ $(document).ready(function () {
         weatherUvIndexDiv
           .attr("class", "list-group-item current uv-index")
           .text("UV Index: ");
-        weatherUvIndexDiv.append($("<span />", {
-          class: "rounded rounded-uv",
-          text: currentUvIndex
-        }));
+        weatherUvIndexDiv.append(weatherUvIndexSpan.attr("class", "rounded rounded-uv").text(currentUvIndex));
+        setUvIndexBackgroundColor(currentUvIndex);
       });
     });
 
@@ -149,6 +148,21 @@ $(document).ready(function () {
     weatherTodayDiv.append(weatherHumidityDiv);
     weatherTodayDiv.append(weatherWindDiv);
     weatherTodayDiv.append(weatherUvIndexDiv);
+  }
+
+  function setUvIndexBackgroundColor(currentUvIndex) {
+    console.log(currentUvIndex);
+    if (currentUvIndex <= 2) {
+      return weatherUvIndexSpan.css("background-color", "green");
+    } else if (currentUvIndex > 2 && currentUvIndex <= 5) {
+      return weatherUvIndexSpan.css("background-color", "yellow");
+    } else if (currentUvIndex > 5 && currentUvIndex <= 7) {  
+      return weatherUvIndexSpan.css("background-color", "orange");
+    } else if (currentUvIndex > 7 && currentUvIndex <= 10) {
+      return weatherUvIndexSpan.css("background-color", "red");
+    } else {
+      return weatherUvIndexSpan.css("background-color", "purple");
+    }
   }
 
   // Create a function to append the 5 day forecast for the city searched
@@ -276,6 +290,6 @@ $(document).ready(function () {
   $(".clear").on("click", function(event) {
     event.preventDefault();
 
-    renderClearSearchHistoryButton();
+    clearSearchHistory();
   });
 });
