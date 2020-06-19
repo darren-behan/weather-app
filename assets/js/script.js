@@ -289,8 +289,9 @@ $(document).ready(function () {
     renderFiveDayForecast();
   });
 
-  $(".btn-light").on("click", function(event) {
+  $("body").on("click", ".btn-light", function(event) {
     event.preventDefault();
+    console.log("I've been clicked");
 
     // Store the html from the button
     var cityTextArray = $(this).html().trim();
