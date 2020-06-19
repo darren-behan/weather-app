@@ -1,6 +1,5 @@
 $(document).ready(function () {
-
-  // Create HTML variables
+  // HTML variables from index.html & dynamically created
 
   var leftColumn = $(".col-sm-3");
   var searchForm = $("#search-form");
@@ -20,7 +19,7 @@ $(document).ready(function () {
   var forecastHeading = $("#forecast-heading");
   var forecastRow = $(".forecast-row");
 
-  // Create Array variables
+  // Empty Array variables
 
   var recentlySearchedCitiesArray = [];
   var city = [];
@@ -28,32 +27,34 @@ $(document).ready(function () {
   // OpenWeatherMap API Key
   var APIKey = "a9bd055528b6c2f7e0ed40218ab0ce62";
 
-  // moment.js
+  // moment.js current date
   var currentDate = moment().format("dddd, MMMM Do");
 
+  // Loads the app
   init();
 
-  // Create a function to append recently searched cities to the search box
+  // Function to append recently searched cities to the search box in the left column
 
   function renderSearchHistory() {
     if (recentlySearchedCitiesArray.length !== 0) {
-      // Clear searchedCities element
+      // Clear searchedCities element & set background color to light grey
       searchedCities.html("");
       leftColumn.css("background-color", "rgb(247, 247, 247)");
     } else {
-      // Clear searchedCities element & exit function
+      // Clear searchedCities element, exit function & set background color to white
       searchedCities.html("");
       buttonDiv.hide();
       leftColumn.css("background-color", "rgb(255, 255, 255)");
       return;
     }
 
+    // Show buttons to select recently search city
     buttonDiv.show();
 
     // Reverse recentlySearchedCitiesArray
     recentlySearchedCitiesArray.reverse();
 
-    // Render a new li for each city searched
+    // Render a new li & button for each city searched with a maximum of only 8 to appear at any given time
     for (var i = 0; i < Math.min(8, recentlySearchedCitiesArray.length); i++) {
       city = recentlySearchedCitiesArray[i];
 
@@ -63,17 +64,19 @@ $(document).ready(function () {
       var recentSearchButton = $("<button>")
         .attr("class", "btn btn-light")
         .attr("type", "button")
-        .text(city);
+        .text(city)
+        .css("background-color", "rgb(255, 255, 255)");
 
       searchedCities.append(recentSearchLi);
       recentSearchLi.append(recentSearchButton);
     }
   }
 
-  // Create a function to clear the recent search history
+  // Function to clear the recent search history
   function clearSearchHistory() {
+    // Hide the buttons attached to each city li
     buttonDiv.hide();
-    
+
     // Clear the array storing the searched cities
     recentlySearchedCitiesArray = [];
 
@@ -84,7 +87,7 @@ $(document).ready(function () {
     localStorage.clear();
   }
 
-  // Create a function to call and store the current weather data & append the weather for the city searched for the current day
+  // Function to call and store the current weather data & append the weather for the city searched for the current day
 
   function renderWeather() {
     if (recentlySearchedCitiesArray[0] !== undefined) {
@@ -98,10 +101,14 @@ $(document).ready(function () {
 
     // Create an AJAX call to retrieve current weather
     $.ajax({
-      url: "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&appid=" +
+      url:
+        "https://api.openweathermap.org/data/2.5/weather?q=" +
+        city +
+        "&units=metric&appid=" +
         APIKey,
       method: "GET",
     }).then(function (response) {
+      // Storing data from the object returned by the AJAX API call
       cityID = response.id;
       currentTemperature = Math.floor(response.main.temp);
       currentIcon = response.weather[0].icon;
@@ -110,10 +117,14 @@ $(document).ready(function () {
       cityCoordLat = response.coord.lat;
       cityCoordLon = response.coord.lon;
 
+      // Adding classes and text to each HTML element when rendered
       weatherTodayDiv.attr("class", "list-group today-ul");
       weatherDateDiv.attr("class", "list-group-item current title");
       weatherDateH2.text(city + " - " + currentDate);
-      weatherImg.attr("src", "https://openweathermap.org/img/w/" + currentIcon + ".png");
+      weatherImg.attr(
+        "src",
+        "https://openweathermap.org/img/w/" + currentIcon + ".png"
+      );
       weatherTempDiv
         .attr("class", "list-group-item current temp")
         .text("Temperature: " + currentTemperature + " degrees celsius");
@@ -124,7 +135,7 @@ $(document).ready(function () {
         .attr("class", "list-group-item current wind")
         .text("Wind Speed: " + currentWindSpeed + " kmph");
 
-      // Separate AJAX call to retrieve UV Index
+      // Separate AJAX call to retrieve UV Index, adding classes and text to each HTML element when rendered
       $.ajax({
         url:
           "https://api.openweathermap.org/data/2.5/uvi?lat=" +
@@ -139,11 +150,16 @@ $(document).ready(function () {
         weatherUvIndexDiv
           .attr("class", "list-group-item current uv-index")
           .text("UV Index: ");
-        weatherUvIndexDiv.append(weatherUvIndexSpan.attr("class", "rounded rounded-uv").text(currentUvIndex));
+        weatherUvIndexDiv.append(
+          weatherUvIndexSpan
+            .attr("class", "rounded rounded-uv")
+            .text(currentUvIndex)
+        );
         setUvIndexBackgroundColor(currentUvIndex);
       });
     });
 
+    // Append the HTML elements
     currentWeatherDiv.append(weatherTodayDiv);
     weatherTodayDiv.append(weatherDateDiv);
     weatherDateDiv.append(weatherDateH2);
@@ -154,12 +170,13 @@ $(document).ready(function () {
     weatherTodayDiv.append(weatherUvIndexDiv);
   }
 
+  // Function to set the relevant background color for the UV Index based on UV Index returned
   function setUvIndexBackgroundColor(uvIndex) {
     if (uvIndex <= 2) {
       return weatherUvIndexSpan.css("background-color", "green");
     } else if (uvIndex > 2 && uvIndex <= 5) {
       return weatherUvIndexSpan.css("background-color", "yellow");
-    } else if (uvIndex > 5 && uvIndex <= 7) {  
+    } else if (uvIndex > 5 && uvIndex <= 7) {
       return weatherUvIndexSpan.css("background-color", "orange");
     } else if (uvIndex > 7 && uvIndex <= 10) {
       return weatherUvIndexSpan.css("background-color", "red");
@@ -168,11 +185,11 @@ $(document).ready(function () {
     }
   }
 
-  // Create a function to append the 5 day forecast for the city searched
+  // Function to append the 5 day forecast for the city searched
 
   function renderFiveDayForecast() {
     if (recentlySearchedCitiesArray[0] !== undefined) {
-      forecastHeading.text("5-Day Forecast"); 
+      forecastHeading.text("5-Day Forecast");
     } else {
       forecastHeading.html = "";
       return;
@@ -180,14 +197,18 @@ $(document).ready(function () {
 
     // Create an AJAX call to retrieve current weather
     $.ajax({
-      url: "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=metric&appid=" +
-      APIKey,
+      url:
+        "https://api.openweathermap.org/data/2.5/forecast?q=" +
+        city +
+        "&units=metric&appid=" +
+        APIKey,
       method: "GET",
     }).then(function (response) {
       listIndex = response.list;
       forecastRow.empty();
 
-      listIndex.forEach(function(item, index) {
+      // API data returned in 3 hour blocks -> For every 7th index, it will be the next day. Render the weather data for that day.
+      listIndex.forEach(function (item, index) {
         if (index % 7 === 0 && index !== 0) {
           forecastDiv = $("<div>").attr(
             "class",
@@ -196,13 +217,21 @@ $(document).ready(function () {
           forecastTodayDiv = $("<div>").attr("class", "list-group today-ul");
           forecastDateDiv = $("<div>").attr("class", "forecast-date-div");
           forecastTempDiv = $("<div>").attr("class", "forecast-temp-div");
-          forecastHumidityDiv = $("<div>").attr("class", "forecast-humidity-div");
+          forecastHumidityDiv = $("<div>").attr(
+            "class",
+            "forecast-humidity-div"
+          );
           forecastH4 = $("<h4>").html(setDate(index));
-          forecastImg = $("<img>").attr("src", "https://openweathermap.org/img/w/" + item.weather[0].icon + ".png");
-          forecastSpanTemp = $("<span>").attr("class", "temp").html("Temp: " + Math.round(item.main.temp) + " degrees");
+          forecastImg = $("<img>").attr(
+            "src",
+            "https://openweathermap.org/img/w/" + item.weather[0].icon + ".png"
+          );
+          forecastSpanTemp = $("<span>")
+            .attr("class", "temp")
+            .html("Temp: " + Math.round(item.main.temp) + " degrees");
           forecastSpanHumidity = $("<span>")
-          .attr("class", "humidity")
-          .html("Humidity: " + item.main.humidity + "%");
+            .attr("class", "humidity")
+            .html("Humidity: " + item.main.humidity + "%");
 
           forecastRow.append(forecastDiv);
           forecastDiv.append(forecastTodayDiv);
@@ -218,26 +247,27 @@ $(document).ready(function () {
     });
   }
 
+  // Function to set the date for each day of the 5-Day forecast
   function setDate(index) {
     if (index === 7) {
-      var dateOne = moment().add(1,'days').format("MMMM Do");
+      var dateOne = moment().add(1, "days").format("MMMM Do");
       return dateOne;
     } else if (index === 14) {
-      var dateTwo = moment().add(2,'days').format("MMMM Do");
+      var dateTwo = moment().add(2, "days").format("MMMM Do");
       return dateTwo;
     } else if (index === 21) {
-      var dateTwo = moment().add(3,'days').format("MMMM Do");
+      var dateTwo = moment().add(3, "days").format("MMMM Do");
       return dateTwo;
     } else if (index === 28) {
-      var dateTwo = moment().add(4,'days').format("MMMM Do");
+      var dateTwo = moment().add(4, "days").format("MMMM Do");
       return dateTwo;
     } else if (index === 35) {
-      var dateTwo = moment().add(5,'days').format("MMMM Do");
+      var dateTwo = moment().add(5, "days").format("MMMM Do");
       return dateTwo;
     }
   }
 
-  // Create a function to initialize (init) the app
+  // Function to initialize (init) the app
 
   function init() {
     // Get stored cities from localStorage
@@ -255,7 +285,7 @@ $(document).ready(function () {
     renderFiveDayForecast();
   }
 
-  // Create a function to locally store the search cities
+  // Function to locally store the search cities
 
   function locallyStoreSearchedCities() {
     // Stringify and set "cities" key in localStorage to recentlySearchedCitiesArray
@@ -264,10 +294,10 @@ $(document).ready(function () {
 
   // Event Listeners
 
-  // Create a click event for the city search box
+  // Click event for the city search box
   // This event will update the recentlySearchedCitiesArray via storeSearchedCities() which will renderRecentSearchesElements()
 
-  $(document).on("submit", searchForm, function(event) {
+  $(document).on("submit", searchForm, function (event) {
     event.preventDefault();
 
     // Store the text from the input
@@ -289,13 +319,13 @@ $(document).ready(function () {
     renderFiveDayForecast();
   });
 
-  $("body").on("click", ".btn-light", function(event) {
+  // Function to add a click event to each button attached to the recently searched cities li. This is attached to the body as the event handler is not removed on re-rendering of the weather sections.
+  $("body").on("click", ".btn-light", function (event) {
     event.preventDefault();
-    console.log("I've been clicked");
 
     // Store the html from the button
     var cityTextArray = $(this).html().trim();
-        
+
     // Add new cityText to recentlySearchedCitiesArray
     recentlySearchedCitiesArray.push(cityTextArray);
 
@@ -304,10 +334,10 @@ $(document).ready(function () {
     renderSearchHistory();
     renderWeather();
     renderFiveDayForecast();
-  })
+  });
 
-  // Click event for save button
-  $(".clear").on("click", function(event) {
+  // Click event for clear button
+  $("body").on("click", ".clear", function (event) {
     event.preventDefault();
 
     clearSearchHistory();
